@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atlas Private Banking — Demo Dashboard</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--panel2:#18233b;--line:#263451;--muted:#9eabc4;--text:#f5f7fc;--gold:#e7c46a;--green:#6ee7b7;--blue:#8bb7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% 0%,#1b2c4c 0%,#0b1020 48%);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.sidebar{padding:28px 18px;border-right:1px solid var(--line);background:#0c1324e8}.brand{display:flex;gap:12px;align-items:center;padding:0 12px 30px;font-size:18px;font-weight:800;letter-spacing:.4px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#f4dc9a,#a87926);display:grid;place-items:center;color:#171a22;font-weight:900}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:var(--muted);text-align:left;padding:13px 14px;border-radius:12px;font:inherit;cursor:pointer}.nav button.active,.nav button:hover{background:#1a2740;color:white}.nav button.active{box-shadow:inset 3px 0 var(--gold)}.sidebar-bottom{margin-top:36px;border-top:1px solid var(--line);padding:18px 12px;color:var(--muted);font-size:12px}
+main{padding:30px clamp(18px,4vw,54px);max-width:1600px;width:100%;margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}.title{font-size:clamp(24px,3vw,34px);margin:4px 0 0}.profile{display:flex;align-items:center;gap:12px}.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#263854;border:1px solid #405372;font-weight:700}.small{font-size:12px;color:var(--muted)}.demo-tag{border:1px solid #7b632e;background:#302719;color:#f4d88d;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.7px}
+.grid{display:grid;grid-template-columns:1.45fr 1fr;gap:18px}.card{background:linear-gradient(145deg,#141e33,#101829);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 18px 45px #00000020}.balance-card{position:relative;overflow:hidden;min-height:250px;background:linear-gradient(120deg,#192641,#243c5c 58%,#3b3a34);border-color:#455777}.balance-card:after{content:"";position:absolute;width:280px;height:280px;border:1px solid #ffffff12;border-radius:50%;right:-55px;top:-90px;box-shadow:0 0 0 28px #ffffff08,0 0 0 56px #ffffff05}.balance-label{color:#c0cce0;font-size:13px}.balance{font-size:clamp(34px,4vw,52px);font-weight:750;letter-spacing:-1.7px;margin:12px 0 4px}.balance span{font-size:19px;color:#cbd6e8;font-weight:500}.balance-foot{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-top:30px}.account-no{font-size:13px;color:#c1cce0}.chip{width:46px;height:34px;border-radius:8px;border:1px solid #e7c46a99;background:linear-gradient(135deg,#f2d995,#a77927);opacity:.9}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.action{background:#e8c66e;color:#171a20;border:0;border-radius:11px;padding:11px 15px;font-weight:800;cursor:pointer}.action.secondary{background:#202e48;color:#e6edf9;border:1px solid #354765}.action:hover{filter:brightness(1.08)}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px}.section-title h2{font-size:18px;margin:0}.section-title button{background:none;color:var(--blue);border:0;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.stat{background:#121b2d;border:1px solid var(--line);border-radius:16px;padding:17px}.stat-label{color:var(--muted);font-size:12px}.stat-value{font-size:20px;font-weight:750;margin-top:5px}.positive{color:var(--green)}
+.chart-wrap{height:210px;position:relative;margin-top:15px}.chart-wrap svg{width:100%;height:100%;overflow:visible}.chart-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:3px}
+.transactions{grid-column:1 / -1}.table{width:100%;border-collapse:collapse}.table th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:12px 10px;border-bottom:1px solid var(--line)}.table td{padding:15px 10px;border-bottom:1px solid #243149}.table tr:last-child td{border-bottom:0}.merchant{display:flex;align-items:center;gap:12px;font-weight:650}.merchant-icon{width:36px;height:36px;display:grid;place-items:center;background:#202e48;border-radius:11px}.status{display:inline-block;border-radius:999px;padding:5px 9px;background:#15352f;color:#7be2b8;font-size:11px}.amount{text-align:right;font-weight:750}.table th:last-child{text-align:right}.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.quick{border:1px solid var(--line);background:#111a2c;border-radius:14px;padding:15px;cursor:pointer;text-align:left;color:var(--text)}.quick strong{display:block;margin-top:9px}.quick span{color:var(--muted);font-size:12px}
+.modal-back{position:fixed;inset:0;background:#050812c9;display:none;place-items:center;padding:20px;z-index:10}.modal{width:min(440px,100%);background:#141e32;border:1px solid #34445f;border-radius:20px;padding:24px;box-shadow:0 25px 80px #0008}.modal h2{margin:0 0 6px}.modal p{color:var(--muted);font-size:13px}.modal label{display:block;color:#bac7dc;font-size:12px;margin:14px 0 6px}.modal input,.modal select{width:100%;background:#0b1323;color:white;border:1px solid #34445f;border-radius:10px;padding:12px;font:inherit}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.notice{font-size:12px;color:#e9cd7d;background:#302719;border:1px solid #6b552b;padding:10px;border-radius:10px;margin-top:14px}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line);padding:12px}.brand{padding:5px 10px 12px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:10px 12px}.sidebar-bottom{display:none}main{padding:20px}.grid{grid-template-columns:1fr}.transactions{overflow-x:auto}.table{min-width:650px}.stats{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:540px){.topbar{align-items:flex-start}.profile .small{display:none}.demo-tag{display:none}.balance-foot{margin-top:22px}.stats{gap:8px}.stat{padding:12px}.stat-value{font-size:16px}.card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">A</div><div>ATLAS <span style="color:var(--gold)">PRIVATE</span></div></div>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="active" data-page="Overview">▦ &nbsp; Overview</button>
+    <button data-page="Accounts">▤ &nbsp; Accounts</button>
+    <button data-page="Transfers">⇄ &nbsp; Transfers</button>
+    <button data-page="Cards">▣ &nbsp; Cards</button>
+    <button data-page="Activity">◷ &nbsp; Activity</button>
+    <button data-page="Settings">⚙ &nbsp; Settings</button>
+  </nav>
+  <div class="sidebar-bottom">DEMO ENVIRONMENT<br><br>Sample interface only. No real bank connection.</div>
+</aside>
+<main>
+  <header class="topbar">
+    <div><div class="eyebrow">Private banking · Demo</div><h1 class="title" id="pageTitle">Good evening, Alex</h1></div>
+    <div class="profile"><span class="demo-tag">● SIMULATED ACCOUNT</span><div class="avatar">A</div></div>
+  </header>
+  <div class="grid">
+    <section class="card balance-card">
+      <div class="balance-label">Total account balance</div>
+      <div class="balance">$20,000,000,000<span>.00</span></div>
+      <div class="balance-label">USD · Twenty billion dollars (sample balance)</div>
+      <div class="balance-foot"><div><div class="account-no">Private Wealth Account</div><strong>••••  ••••  2048</strong></div><div class="chip"></div></div>
+      <div class="actions"><button class="action" data-modal="transfer">⇄ &nbsp; Transfer</button><button class="action secondary" data-modal="details">Account details</button></div>
+    </section>
+    <section class="card">
+      <div class="section-title" style="margin:0"><h2>Quick actions</h2><span class="small">Demo controls</span></div>
+      <div class="quick-grid" style="margin-top:16px">
+        <button class="quick" data-modal="transfer">⇄<strong>New transfer</strong><span>Preview a transfer</span></button>
+        <button class="quick" data-modal="deposit">＋<strong>Add funds</strong><span>Simulate a deposit</span></button>
+        <button class="quick" data-modal="statement">▤<strong>Statement</strong><span>View sample statement</span></button>
+        <button class="quick" data-modal="details">♙<strong>Account info</strong><span>View demo details</span></button>
+      </div>
+      <div class="notice">Demo only — actions do not move money or connect to a financial institution.</div>
+    </section>
+    <section class="card">
+      <div class="section-title" style="margin:0"><h2>Balance overview</h2><span class="small">Last 6 months</span></div>
+      <div class="chart-wrap"><svg viewBox="0 0 600 210" role="img" aria-label="Illustrative balance trend chart">
+      <defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e7c46a" stop-opacity=".28"/><stop offset="1" stop-color="#e7c46a" stop-opacity="0"/></linearGradient></defs>
+      <g stroke="#29364e" stroke-width="1"><line x1="0" y1="35" x2="600" y2="35"/><line x1="0" y1="85" x2="600" y2="85"/><line x1="0" y1="135" x2="600" y2="135"/><line x1="0" y1="185" x2="600" y2="185"/></g>
+      <path d="M0,165 C65,150 75,128 120,138 S190,100 240,112 S300,65 360,85 S430,45 480,65 S550,25 600,32 L600,185 L0,185Z" fill="url(#fill)"/>
+      <path d="M0,165 C65,150 75,128 120,138 S190,100 240,112 S300,65 360,85 S430,45 480,65 S550,25 600,32" fill="none" stroke="#e7c46a" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="600" cy="32" r="5" fill="#e7c46a" stroke="#121a2e" stroke-width="3"/>
+      </svg></div>
+      <div class="chart-labels"><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Income</div><div class="stat-value positive">+$2.4M</div></div>
+        <div class="stat"><div class="stat-label">Expenses</div><div class="stat-value">−$845K</div></div>
+        <div class="stat"><div class="stat-label">Net change</div><div class="stat-value positive">+$1.55M</div></div>
+      </div>
+    </section>
+    <section class="card">
+      <div class="section-title" style="margin:0"><h2>Account summary</h2><button data-modal="details">View details →</button></div>
+      <div style="display:grid;gap:17px;margin-top:20px">
+        <div style="display:flex;justify-content:space-between;gap:12px"><span class="small">Available balance</span><strong>$20,000,000,000.00</strong></div>
+        <div style="display:flex;justify-content:space-between;gap:12px"><span class="small">Pending transactions</span><strong>$0.00</strong></div>
+        <div style="display:flex;justify-content:space-between;gap:12px"><span class="small">Account type</span><strong>Private Wealth</strong></div>
+        <div style="display:flex;justify-content:space-between;gap:12px"><span class="small">Currency</span><strong>USD</strong></div>
+      </div>
+    </section>
+    <section class="card transactions">
+      <div class="section-title"><h2>Recent activity</h2><button data-page-link="Activity">View all →</button></div>
+      <table class="table"><thead><tr><th>Transaction</th><th>Date</th><th>Status</th><th>Amount</th></tr></thead><tbody id="transactionRows">
+      <tr><td><div class="merchant"><div class="merchant-icon">↗</div>Investment portfolio</div></td><td>Oct 30, 2026</td><td><span class="status">Completed</span></td><td class="amount positive">+$850,000.00</td></tr>
+      <tr><td><div class="merchant"><div class="merchant-icon">◇</div>Property management</div></td><td>Oct 28, 2026</td><td><span class="status">Completed</span></td><td class="amount">−$42,500.00</td></tr>
+      <tr><td><div class="merchant"><div class="merchant-icon">↗</div>Private equity dividend</div></td><td>Oct 24, 2026</td><td><span class="status">Completed</span></td><td class="amount positive">+$1,200,000.00</td></tr>
+      <tr><td><div class="merchant"><div class="merchant-icon">▣</div>Luxury travel</div></td><td>Oct 21, 2026</td><td><span class="status">Completed</span></td><td class="amount">−$18,750.00</td></tr>
+      </tbody></table>
+    </section>
+  </div>
+</main>
+</div>
+<div class="modal-back" id="modalBack"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">Demo</h2><p id="modalText"></p><div id="modalFields"></div><div class="modal-actions"><button class="action secondary" id="closeModal">Close</button><button class="action" id="confirmModal">Continue</button></div></div></div>
+<script>
+const back=document.getElementById('modalBack'), title=document.getElementById('modalTitle'), desc=document.getElementById('modalText'), fields=document.getElementById('modalFields'), confirm=document.getElementById('confirmModal');
+let current='';
+const modalData={
+ transfer:{title:'New transfer',text:'Create a simulated transfer preview. This demo cannot send money.',fields:`<label>Recipient</label><input id="recipient" placeholder="Recipient name" /><label>Amount (USD)</label><input id="amount" type="number" min="0" placeholder="0.00" />`,button:'Preview transfer'},
+ deposit:{title:'Add funds',text:'Simulate a deposit for demonstration purposes only.',fields:`<label>Deposit amount (USD)</label><input id="amount" type="number" min="0" placeholder="0.00" />`,button:'Simulate deposit'},
+ details:{title:'Account details',text:'Illustrative account information. No actual bank account is associated with this dashboard.',fields:`<div class="stat"><div class="stat-label">Account holder</div><div class="stat-value">Alex Morgan (sample)</div></div><div class="stat" style="margin-top:10px"><div class="stat-label">Account number</div><div class="stat-value">•••• •••• 2048</div></div><div class="stat" style="margin-top:10px"><div class="stat-label">Routing number</div><div class="stat-value">•••••••••</div></div>`,button:'Got it'},
+ statement:{title:'Sample statement',text:'Sample statement summary for the simulated account.',fields:`<div class="stat"><div class="stat-label">Statement period</div><div class="stat-value">Oct 1 – Oct 31, 2026</div></div><div class="stat" style="margin-top:10px"><div class="stat-label">Closing balance</div><div class="stat-value">$20,000,000,000.00</div></div>`,button:'Close statement'}
+};
+function openModal(kind){current=kind;const d=modalData[kind];title.textContent=d.title;desc.textContent=d.text;fields.innerHTML=d.fields;confirm.textContent=d.button;back.style.display='grid';}
+document.querySelectorAll('[data-modal]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.modal)));
+document.getElementById('closeModal').addEventListener('click',()=>back.style.display='none');
+back.addEventListener('click',e=>{if(e.target===back)back.style.display='none'});
+confirm.addEventListener('click',()=>{
+ if(current==='transfer'||current==='deposit'){
+   const amount=Number(document.getElementById('amount')?.value||0);
+   const recipient=document.getElementById('recipient')?.value||'recipient';
+   if(!amount||amount<0){desc.textContent='Enter a valid amount to preview this demo action.';return;}
+   desc.textContent=current==='transfer'?`Transfer preview: $${amount.toLocaleString('en-US',{minimumFractionDigits:2})} to ${recipient}. No money was sent.`:`Deposit simulation: $${amount.toLocaleString('en-US',{minimumFractionDigits:2})}. No money was deposited.`;
+   fields.innerHTML='<div class="notice">Simulation only. No transaction has occurred.</div>';confirm.textContent='Done';current='done';
+ }else back.style.display='none';
+ if(current==='done')confirm.onclick=()=>{back.style.display='none';confirm.onclick=null};
+});
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-page]').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ document.getElementById('pageTitle').textContent=b.dataset.page==='Overview'?'Good evening, Alex':b.dataset.page;
+ if(b.dataset.page!=='Overview'){title.textContent=b.dataset.page;desc.textContent=`${b.dataset.page} section in this interactive demo.`;fields.innerHTML='<div class="notice">Sample interface only. This dashboard is not connected to a bank.</div>';confirm.textContent='Okay';current='section';back.style.display='grid';}
+}));
+document.querySelectorAll('[data-page-link]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('[data-page="Activity"]').click()}));
+</script>
+</body>
+</html>
